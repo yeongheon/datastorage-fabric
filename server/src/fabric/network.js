@@ -70,9 +70,9 @@ exports.createAsset = async function(assetID, assetURI, assetHash) {
 } // Create Research Asset
 
 exports.updateAsset = async function(assetID, userName, assetURI, assetHash) {
-exports.queryAllAsset = async function() {
     try {
         let response = {}
+        let timestamp = new Date().toISOString()
 
         // make new wallet based on filesystem
         const walletPath = path.join(process.cwd(), '/wallet')
@@ -103,15 +103,16 @@ exports.queryAllAsset = async function() {
         const contract = network.getContract('datastorage')
 
         // submit tx
-        const result = await contract.evaluateTransaction('queryAllAsset')
-        console.log(`Transaction has been evaluated, result is ${result.toString}`)
+        await contract.submitTransaction('updateAsset', assetID, userName, assetURI, assetHash, timestamp)
+        console.log('Transaction has been submitted')
 
         // disconnect from the gateway
         await gateway.disconnect()
 
-        return result
+        response.msg = 'updateAsset Transaction has been submitted'
+        return response
     } catch (e) {
-        console.error(`Failed to evaluate transaction: ${e}`)
+        console.error(`Failed to submit transaction: ${e}`)
         let response = {}
         response.error = e.message
         
@@ -169,53 +170,52 @@ exports.queryAllAsset = async function() {
 } // Query all Asset without URI information
 
 exports.queryAssetbyID = async function(assetID) {
-    exports.queryAllAsset = async function() {
-        try {
-            let response = {}
-    
-            // make new wallet based on filesystem
-            const walletPath = path.join(process.cwd(), '/wallet')
-            const wallet = new FileSystemWallet(walletPath)
-            console.log(`Wallet Path: ${walletPath}`)
-    
-            const userExists = await wallet.userExists(userName)
-            if (!userExists) {
-                console.log('An identity for User ' + userName + ' doesn not exists in the Wallet')
-                console.log('Run the registerUser.js before run this script')
-                response.error = 'An identity for the user ' + userName + ' does not exist in the wallet. Register ' + userName + ' first'
-    
-                return response
-            }
-    
-            // create new gateway to connect peer
-            const gateway = new Gateway()
-            await gateway.connect(ccp, {
-                wallet: wallet,
-                identity: userName,
-                discovery: gatewayDiscovery
-            })
-    
-            // get the network to deploy contract
-            const network = await gateway.getNetwork('mychannel')
-            
-            // get the contract from the network
-            const contract = network.getContract('datastorage')
-    
-            // submit tx
-            const result = await contract.evaluateTransaction('queryAssetbyID', assetID, userName)
-            console.log(`Transaction has been evaluated, result is ${result.toString}`)
-    
-            // disconnect from the gateway
-            await gateway.disconnect()
-    
-            return result
-        } catch (e) {
-            console.error(`Failed to evaluate transaction: ${e}`)
-            let response = {}
-            response.error = e.message
-            
+    try {
+        let response = {}
+
+        // make new wallet based on filesystem
+        const walletPath = path.join(process.cwd(), '/wallet')
+        const wallet = new FileSystemWallet(walletPath)
+        console.log(`Wallet Path: ${walletPath}`)
+
+        const userExists = await wallet.userExists(userName)
+        if (!userExists) {
+            console.log('An identity for User ' + userName + ' doesn not exists in the Wallet')
+            console.log('Run the registerUser.js before run this script')
+            response.error = 'An identity for the user ' + userName + ' does not exist in the wallet. Register ' + userName + ' first'
+
             return response
         }
+
+        // create new gateway to connect peer
+        const gateway = new Gateway()
+        await gateway.connect(ccp, {
+            wallet: wallet,
+            identity: userName,
+            discovery: gatewayDiscovery
+        })
+
+        // get the network to deploy contract
+        const network = await gateway.getNetwork('mychannel')
+        
+        // get the contract from the network
+        const contract = network.getContract('datastorage')
+
+        // submit tx
+        const result = await contract.evaluateTransaction('queryAssetbyID', assetID, userName)
+        console.log(`Transaction has been evaluated, result is ${result.toString}`)
+
+        // disconnect from the gateway
+        await gateway.disconnect()
+
+        return result
+    } catch (e) {
+        console.error(`Failed to evaluate transaction: ${e}`)
+        let response = {}
+        response.error = e.message
+        
+        return response
+    }
 } // Query target asset by ID
 
 exports.requestAccess = async function (assetID, userName) {
