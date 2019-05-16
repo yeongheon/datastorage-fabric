@@ -18,15 +18,54 @@ const ccpJSON = fs.readFileSync(ccpPath, 'utf8')
 const ccp = JSON.parse(ccpJSON)
 // parse connection variables from connection_file
 
-exports.createAsset = async function(assetID, researcherID, assetURI, assetHash) {
-    let response = {}
-    
-    // make new wallet based on filesystem
-    const walletPath = path.join(process.cwd(), '/wallet')
-    const wallet = new FileSystemWallet(walletPath)
-    console.log(`Wallet Path: ${walletPath}`)
+exports.createAsset = async function(assetID, assetURI, assetHash) {
+    try {
+        let response = {}
 
+        // make new wallet based on filesystem
+        const walletPath = path.join(process.cwd(), '/wallet')
+        const wallet = new FileSystemWallet(walletPath)
+        console.log(`Wallet Path: ${walletPath}`)
 
+        const userExists = await wallet.userExists(userName)
+        if (!userExists) {
+            console.log('An identity for User ' + userName + ' doesn not exists in the Wallet')
+            console.log('Run the registerUser.js before run this script')
+            response.error = 'An identity for the user ' + userName + ' does not exist in the wallet. Register ' + userName + ' first'
+
+            return response
+        }
+
+        // create new gateway to connect peer
+        const gateway = new Gateway()
+        await gateway.connect(ccp, {
+            wallet: wallet,
+            identity: userName,
+            discovery: gatewayDiscovery
+        })
+
+        // get the network to deploy contract
+        const network = await gateway.getNetwork('mychannel')
+        
+        // get the contract from the network
+        const contract = network.getContract('datastorage')
+
+        // submit tx
+        await contract.submitTransaction('createAsset', assetID, userName, assetURI, assetHash)
+        console.log('Transaction has been submitted')
+
+        // disconnect from the gateway
+        await gateway.disconnect()
+
+        response.msg = 'createAsset Transaction has been submitted'
+        return response
+    } catch (e) {
+        console.error(`Failed to submit transaction: ${e}`)
+        let response = {}
+        response.error = e.message
+        
+        return response
+    }
 } // Create Research Asset
 
 exports.updateAsset = async function(assetID, researcherID, assetURI, assetHash) {
