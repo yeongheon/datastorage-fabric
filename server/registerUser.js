@@ -48,7 +48,7 @@ async function main() {
             discovery: gatewayDiscovery
         })
 
-        // create a new gratewy to interact with CA
+        // create a new gateway to interact with CA
         const ca = gateway.getClient().getCertificateAuthority()
         const adminIdentity = gateway.getCurrentIdentity()
 
