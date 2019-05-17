@@ -40,7 +40,7 @@ app.post('/updateAsset', (req, res) => {
         console.log(response)
         let assetList = JSON.parse(JSON.parse(response))
         let assetID = req.body.assetID
-        let newVersion = 'v'+(parseInt(assetList.assetID.lastVersion[1])+1)
+        let newVersion = 'v'+(parseInt(assetList.assetID.lastVersion.replace(/\D/g, ""))+1)
         network.updateAsset(assetID,
             req.body.assetURI,
             req.body.assetHash,
