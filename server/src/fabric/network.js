@@ -69,7 +69,7 @@ exports.createAsset = async function(assetID, assetURI, assetHash) {
     }
 } // Create Research Asset
 
-exports.updateAsset = async function(assetID, userName, assetURI, assetHash) {
+exports.updateAsset = async function(assetID, assetURI, assetHash, newVersion) {
     try {
         let response = {}
         let timestamp = new Date().toISOString()
@@ -103,7 +103,7 @@ exports.updateAsset = async function(assetID, userName, assetURI, assetHash) {
         const contract = network.getContract('datastorage')
 
         // submit tx
-        await contract.submitTransaction('updateAsset', assetID, userName, assetURI, assetHash, timestamp)
+        await contract.submitTransaction('updateAsset', assetID, userName, assetURI, assetHash, newVersion, timestamp)
         console.log('Transaction has been submitted')
 
         // disconnect from the gateway
@@ -218,7 +218,7 @@ exports.queryAssetbyID = async function(assetID) {
     }
 } // Query target asset by ID
 
-exports.requestAccess = async function (assetID, userName) {
+exports.requestAccess = async function (assetID) {
     try {
         let response = {}
 
