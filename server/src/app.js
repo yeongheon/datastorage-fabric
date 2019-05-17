@@ -90,3 +90,5 @@ app.post('/revokeAccess', (req, res) => {
             res.send(response)
         })
 })
+
+app.listen(process.env.PORT || 8081)
