@@ -339,7 +339,7 @@ exports.revokeAccess = async function (assetID, researcherID) {
         // create new gateway to connect peer
         const gateway = new Gateway()
         await gateway.connect(ccp, {
-            wallet: wallet,
+            awallet: wallet,
             identity: userName,
             discovery: gatewayDiscovery
         })

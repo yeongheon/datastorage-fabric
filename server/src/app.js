@@ -22,7 +22,7 @@ app.post('/createAsset', (req, res) => {
     .then((response) => {
         console.log(response)
         let assetList = JSON.parse(JSON.parse(response))
-        let numAsset = Object.keys(assetList).length
+        let numAsset = assetList.length
         let newID = 'Asset' + numAsset+1
         network.createAsset(newID,
             req.body.assetURI,
