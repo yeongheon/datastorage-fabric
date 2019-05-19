@@ -165,3 +165,5 @@ class DataStorage extends Contract {
         console.info('Revoked Access: ' + assetID)
     }
 }
+
+module.exports = DataStorage
