@@ -1,6 +1,6 @@
 'use strict'
 
-const { fileSystemWallet, Gateway, X509WalletMixin} = require('fabric-network')
+const { FileSystemWallet, Gateway, X509WalletMixin} = require('fabric-network')
 const fs = require('fs')
 const path = require('path')
 
@@ -22,7 +22,7 @@ async function main() {
     try {
         // make new wallet based on filesystem
         const walletPath = path.join(process.cwd(), 'wallet')
-        const wallet = new fileSystemWallet(walletPath)
+        const wallet = new FileSystemWallet(walletPath)
         console.log(`Wallet Path: ${walletPath}`)
 
         // check if user exists in the wallet
@@ -70,7 +70,7 @@ async function main() {
         wallet.import(userName, userIdentity)
         console.log('Successfully registered and enrolled admin user ' + userName + ' and imported into the wallet')
     } catch (e) {
-        console.error('Failed to register ' + userName + `due to ${e}`)
+        console.error('Failed to register ' + userName + ` due to ${e}`)
         process.exit(1)
     }
 }
