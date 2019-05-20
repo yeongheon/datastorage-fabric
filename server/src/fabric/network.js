@@ -76,11 +76,11 @@ exports.updateAsset = async function(assetID, assetURI, assetHash, newVersion) {
         let timestamp = new Date().toISOString()
 
         // make new wallet based on filesystem
-        const walletPath = path.join(process.cwd(), '/wallet')
+        const walletPath = path.join(process.cwd(), '../wallet')
         const wallet = new FileSystemWallet(walletPath)
         console.log(`Wallet Path: ${walletPath}`)
 
-        const userExists = await wallet.userExists(userName)
+        const userExists = await wallet.exists(userName)
         if (!userExists) {
             console.log('An identity for User ' + userName + ' doesn not exists in the Wallet')
             console.log('Run the registerUser.js before run this script')
@@ -101,9 +101,10 @@ exports.updateAsset = async function(assetID, assetURI, assetHash, newVersion) {
         const network = await gateway.getNetwork('mychannel')
         
         // get the contract from the network
-        const contract = network.getContract('datastorage')
+        const contract = network.getContract('data-storage')
 
         // submit tx
+        console.log(assetID, userName, assetURI, assetHash, newVersion, timestamp)
         await contract.submitTransaction('updateAsset', assetID, userName, assetURI, assetHash, newVersion, timestamp)
         console.log('Transaction has been submitted')
 

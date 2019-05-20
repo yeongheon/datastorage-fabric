@@ -55,17 +55,28 @@ app.post('/createAsset', upload.single('userfile'), (req, res) => {
     })
 })
 
-app.post('/updateAsset', (req, res) => {
+app.get('/updateAsset', function(req, res){
+    res.render('update')
+})
+
+app.post('/updateAsset', upload.single('userfile'), (req, res) => {
+    console.log(req.file)
     console.log(req.body)
+    const uploadFile = fs.readFileSync(req.file.path),
+	hash = xxhash.hash64(uploadFile, 0, 'hex')
+	console.log('xxhash: ' + hash)
     network.queryAllAsset()
     .then((response) => {
         console.log(response)
         let assetList = JSON.parse(JSON.parse(response))
         let assetID = req.body.assetID
-        let newVersion = 'v'+(parseInt(assetList.assetID.lastVersion.replace(/\D/g, ""))+1)
+        let filter = assetList.filter(a => a.Key == assetID)
+        console.log(filter)
+        let newVersion = 'v'+(parseInt(filter[0].Record.lastVersion.replace(/\D/g, ""))+1)
+        console.log('newVersion: ' + newVersion)
         network.updateAsset(assetID,
-            req.body.assetURI,
-            req.body.assetHash,
+            'http://localhost:8081/users/' + req.file.filename,
+            hash,
             newVersion)
             .then((response) => {
                 res.send(response)
