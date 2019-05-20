@@ -1,5 +1,5 @@
 {
-    "name": "datastorage-network",
+    "name": "basic-network",
     "version": "1.0.0",
     "client": {
         "organization": "Org1",
@@ -20,10 +20,7 @@
                 "orderer.example.com"
             ],
             "peers": {
-                "peer0.org1.example.com": {},
-                "peer1.org1.example.com": {},
-                "peer0.org2.example.com": {},
-                "peer1.org2.example.com": {}
+                "peer0.org1.example.com": {}
             }
         }
     },
@@ -31,21 +28,10 @@
         "Org1": {
             "mspid": "Org1MSP",
             "peers": [
-                "peer0.org1.example.com",
-                "peer1.org1.example.com"
+                "peer0.org1.example.com"
             ],
             "certificateAuthorities": [
                 "ca.org1.example.com"
-            ]
-        },
-        "Org2": {
-            "mspid": "Org2MSP",
-            "peers": [
-                "peer0.org1.example.com",
-                "peer1.org2.example.com"
-            ],
-            "certificateAuthorities": [
-                "ca.org2.example.com"
             ]
         }
     },
@@ -58,28 +44,12 @@
         "peer0.org1.example.com": {
             "url": "grpc://localhost:17051",
             "eventUrl": "grpc://localhost:17053"
-        },
-        "peer1.org1.example.com": {
-            "url": "grpc://localhost:17061",
-            "eventUrl": "grpc://localhost:17063"
-        },
-        "peer0.org2.example.com": {
-            "url": "grpc://localhost:18051",
-            "eventUrl": "grpc://localhost:18053"
-        },
-        "peer1.org2.example.com": {
-            "url": "grpc://localhost:18061",
-            "eventUrl": "grpc://localhost:18063"
         }
     },
     "certificateAuthorities": {
         "ca.org1.example.com": {
             "url": "http://localhost:17054",
-            "caName": "ca.org1.example.com"
-        },
-        "ca.org2.example.com": {
-            "url": "http://localhost:18054",
-            "caName": "ca.org2.example.com"
+            "caName": "ca.example.com"
         }
     }
 }

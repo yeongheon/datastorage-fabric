@@ -4,7 +4,7 @@ const { FileSystemWallet, Gateway, X509WalletMixin } = require('fabric-network')
 const fs = require('fs')
 const path = require('path')
 
-const configPath = path.join(process.cwd(), '/config.json')
+const configPath = path.join(process.cwd(), '../config.json')
 const configJSON = fs.readFileSync(configPath, 'utf8')
 const config = JSON.parse(configJSON)
 // Parse config variables from config.json
@@ -13,7 +13,7 @@ let connection_file = config.connection_file
 let userName = config.userName
 let gatewayDiscovery = config.gatewayDiscovery
 
-const ccpPath = path.join(process.cwd(), connection_file)
+const ccpPath = path.join(process.cwd(), '../' + connection_file)
 const ccpJSON = fs.readFileSync(ccpPath, 'utf8')
 const ccp = JSON.parse(ccpJSON)
 // parse connection variables from connection_file
@@ -24,11 +24,11 @@ exports.createAsset = async function(assetID, assetURI, assetHash) {
         let timestamp = new Date().toISOString()
 
         // make new wallet based on filesystem
-        const walletPath = path.join(process.cwd(), '/wallet')
+        const walletPath = path.join(process.cwd(), '../wallet')
         const wallet = new FileSystemWallet(walletPath)
         console.log(`Wallet Path: ${walletPath}`)
 
-        const userExists = await wallet.userExists(userName)
+        const userExists = await wallet.exists(userName)
         if (!userExists) {
             console.log('An identity for User ' + userName + ' doesn not exists in the Wallet')
             console.log('Run the registerUser.js before run this script')
@@ -49,9 +49,10 @@ exports.createAsset = async function(assetID, assetURI, assetHash) {
         const network = await gateway.getNetwork('mychannel')
         
         // get the contract from the network
-        const contract = network.getContract('datastorage')
+        const contract = network.getContract('data-storage')
 
         // submit tx
+        console.log(assetID, userName, assetURI, assetHash, timestamp)
         await contract.submitTransaction('createAsset', assetID, userName, assetURI, assetHash, timestamp)
         console.log('Transaction has been submitted')
 
@@ -125,11 +126,11 @@ exports.queryAllAsset = async function() {
         let response = {}
 
         // make new wallet based on filesystem
-        const walletPath = path.join(process.cwd(), '/wallet')
+        const walletPath = path.join(process.cwd(), '../wallet')
         const wallet = new FileSystemWallet(walletPath)
         console.log(`Wallet Path: ${walletPath}`)
 
-        const userExists = await wallet.userExists(userName)
+        const userExists = await wallet.exists(userName)
         if (!userExists) {
             console.log('An identity for User ' + userName + ' doesn not exists in the Wallet')
             console.log('Run the registerUser.js before run this script')
@@ -150,11 +151,11 @@ exports.queryAllAsset = async function() {
         const network = await gateway.getNetwork('mychannel')
         
         // get the contract from the network
-        const contract = network.getContract('datastorage')
+        const contract = network.getContract('data-storage')
 
         // submit tx
         const result = await contract.evaluateTransaction('queryAllAsset')
-        console.log(`Transaction has been evaluated, result is ${result.toString}`)
+        console.log(`Transaction has been evaluated, result is ${result.toString()}`)
 
         // disconnect from the gateway
         await gateway.disconnect()

@@ -13,8 +13,11 @@
     "express": "^4.16.4",
     "fabric-ca-client": "~1.4.0",
     "fabric-network": "~1.4.0",
+    "jade": "^1.11.0",
     "morgan": "^1.9.1",
-    "nodemon": "^1.18.9"
+    "multer": "^1.4.1",
+    "nodemon": "^1.18.9",
+    "xxhash": "^0.2.4"
   },
   "devDependencies": {
     "eslint": "^5.16.0"

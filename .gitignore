@@ -60,6 +60,9 @@ typings/
 # next.js build output
 .next
 
+# Dictonary for user uploads
+uploads
+
 # Directory for wallet secrets
 wallet
 
