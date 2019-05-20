@@ -1,0 +1,9 @@
+{
+    "connection_file": "connection.json",
+    "appAdmin": "admin",
+    "appAdminSecret": "adminpw",
+    "orgMSPID": "Org1MSP",
+    "caName": "ca.org1.example.com",
+    "userName": "User2@org1.example.com",
+    "gatewayDiscovery": { "enabled": false }
+}
