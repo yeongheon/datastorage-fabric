@@ -4,6 +4,6 @@
     "appAdminSecret": "app-adminpw",
     "orgMSPID": "org1msp",
     "caName": "184.172.242.103:30208",
-    "userName": "user@Org1",
+    "userName": "user@Org2",
     "gatewayDiscovery": { "enabled": true, "asLocalhost": false }
 }

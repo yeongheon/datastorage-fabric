@@ -4,7 +4,7 @@ const { FileSystemWallet, Gateway, X509WalletMixin} = require('fabric-network')
 const fs = require('fs')
 const path = require('path')
 
-const configPath = path.join(process.cwd(), 'config-Org1User2.json')
+const configPath = path.join(process.cwd(), 'config-Org2.json')
 const configJSON = fs.readFileSync(configPath, 'utf8')
 const config = JSON.parse(configJSON)
 
@@ -54,7 +54,7 @@ async function main() {
 
         // register and enroll the user, get new identity into the wallet
         const secret = await ca.register({
-            affiliation: 'org1.department1',
+            affiliation: 'org2.department1',
             enrollmentID: userName,
             role: 'client'
         }, adminIdentity)

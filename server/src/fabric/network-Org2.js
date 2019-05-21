@@ -4,7 +4,7 @@ const { FileSystemWallet, Gateway, X509WalletMixin } = require('fabric-network')
 const fs = require('fs')
 const path = require('path')
 
-const configPath = path.join(process.cwd(), '../config-Org1User2.json')
+const configPath = path.join(process.cwd(), '../config-Org2.json')
 const configJSON = fs.readFileSync(configPath, 'utf8')
 const config = JSON.parse(configJSON)
 // Parse config variables from config.json

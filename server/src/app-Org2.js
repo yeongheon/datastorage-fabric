@@ -14,7 +14,7 @@ const upload = multer({ storage: storage })
 const fs = require('fs')
 const xxhash = require('xxhash')
 
-var network = require('./fabric/network-Org1User2.js')
+var network = require('./fabric/network-Org2.js')
 
 const app = express()
 
