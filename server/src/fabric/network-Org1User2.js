@@ -225,11 +225,11 @@ exports.requestAccess = async function (assetID) {
         let response = {}
 
         // make new wallet based on filesystem
-        const walletPath = path.join(process.cwd(), '/wallet')
+        const walletPath = path.join(process.cwd(), '../wallet')
         const wallet = new FileSystemWallet(walletPath)
         console.log(`Wallet Path: ${walletPath}`)
 
-        const userExists = await wallet.userExists(userName)
+        const userExists = await wallet.exists(userName)
         if (!userExists) {
             console.log('An identity for User ' + userName + ' doesn not exists in the Wallet')
             console.log('Run the registerUser.js before run this script')
@@ -250,7 +250,7 @@ exports.requestAccess = async function (assetID) {
         const network = await gateway.getNetwork('mychannel')
         
         // get the contract from the network
-        const contract = network.getContract('datastorage')
+        const contract = network.getContract('data-storage')
 
         // submit tx
         await contract.submitTransaction('requestAccess', assetID, userName)
@@ -275,11 +275,11 @@ exports.grantAccess = async function (assetID, researcherID) {
         let response = {}
 
         // make new wallet based on filesystem
-        const walletPath = path.join(process.cwd(), '/wallet')
+        const walletPath = path.join(process.cwd(), '../wallet')
         const wallet = new FileSystemWallet(walletPath)
         console.log(`Wallet Path: ${walletPath}`)
 
-        const userExists = await wallet.userExists(userName)
+        const userExists = await wallet.exists(userName)
         if (!userExists) {
             console.log('An identity for User ' + userName + ' doesn not exists in the Wallet')
             console.log('Run the registerUser.js before run this script')
@@ -300,7 +300,7 @@ exports.grantAccess = async function (assetID, researcherID) {
         const network = await gateway.getNetwork('mychannel')
         
         // get the contract from the network
-        const contract = network.getContract('datastorage')
+        const contract = network.getContract('data-storage')
 
         // submit tx
         await contract.submitTransaction('grantAccess', assetID, userName, researcherID)
@@ -325,11 +325,11 @@ exports.revokeAccess = async function (assetID, researcherID) {
         let response = {}
 
         // make new wallet based on filesystem
-        const walletPath = path.join(process.cwd(), '/wallet')
+        const walletPath = path.join(process.cwd(), '../wallet')
         const wallet = new FileSystemWallet(walletPath)
         console.log(`Wallet Path: ${walletPath}`)
 
-        const userExists = await wallet.userExists(userName)
+        const userExists = await wallet.exists(userName)
         if (!userExists) {
             console.log('An identity for User ' + userName + ' doesn not exists in the Wallet')
             console.log('Run the registerUser.js before run this script')
@@ -341,7 +341,7 @@ exports.revokeAccess = async function (assetID, researcherID) {
         // create new gateway to connect peer
         const gateway = new Gateway()
         await gateway.connect(ccp, {
-            awallet: wallet,
+            wallet: wallet,
             identity: userName,
             discovery: gatewayDiscovery
         })
@@ -350,7 +350,7 @@ exports.revokeAccess = async function (assetID, researcherID) {
         const network = await gateway.getNetwork('mychannel')
         
         // get the contract from the network
-        const contract = network.getContract('datastorage')
+        const contract = network.getContract('data-storage')
 
         // submit tx
         await contract.submitTransaction('revokeAccess', assetID, userName, researcherID)
