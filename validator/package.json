@@ -1,0 +1,14 @@
+{
+  "name": "validator",
+  "version": "1.0.0",
+  "description": "CLI tool for validate hash of data using xxHash",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Yeongheon Song",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "xxhash": "^0.2.4"
+  }
+}
